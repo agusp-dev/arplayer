@@ -1,6 +1,13 @@
+import { Box } from '@material-ui/core'
+import { useStyles } from './styles'
 
 export default function AudioPlayer () {
+  const classes = useStyles()
   return (
-    <div>Audio Player</div>
+    <Box 
+      component='div'
+      className={ classes.root }>
+        Audio Player
+    </Box>
   )
 }
