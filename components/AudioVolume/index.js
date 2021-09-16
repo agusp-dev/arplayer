@@ -28,7 +28,6 @@ export default function AudioVolume () {
             onChange={ handleChangeVolume } 
             aria-labelledby='continuous-slider'
             className={ classes.slider } />
-
         </Box>
 
     </Box>
