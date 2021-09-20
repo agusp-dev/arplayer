@@ -11,33 +11,39 @@ export default function AudioPlayer () {
   const AUDIO_URL = 'https://cdn.simplecast.com/audio/2db45ca2-a004-4843-b17e-79ea45f25093/episodes/17e9092f-c8e3-4cf5-9fd5-c8a29a8471cd/audio/261915f9-3469-4918-bcc2-504446d0f9a5/default_tc.mp3'
 
   const [isPlaying, setIsPlaying] = useState(false)
-  const [progressValue, setProgressValue] = useState(40)
+
+  const [currentTime, setCurrentTime] = useState(0) // audio current time
+  const [duration, setDuration] = useState(0) // audio duration
 
   const audioPlayer = useRef()   // reference our audio component
   const progressBar = useRef()   // reference our progress bar
+  const animationRef = useRef()  // reference the animation
 
-  // const changeRange = () => {
-  //   audioPlayer.current.currentTime = progressBar.current.value
-  //   changePlayerCurrentTime()
-  // }
+  useEffect(() => {
+    const seconds = Math.floor(audioPlayer.current.duration)
+    setDuration(seconds)
+    progressBar.current.max = seconds
 
-  // const changePlayerCurrentTime = () => {
-  //   progressBar.current.style.setProperty('--seek-before-width', `${progressBar.current.value / duration * 100}%`)
-  //   setCurrentTime(progressBar.current.value)
-  // }
+  }, [audioPlayer?.current?.loadedmetadata, audioPlayer?.current?.readyState])
+
+  const onChangePlayerProgress = newValue => audioPlayer.current.currentTime = newValue
 
   const togglePlayOrPause = () => {
     const prevValue = isPlaying
     setIsPlaying(!prevValue)
     if (!prevValue) {
-      console.log('togglePlayOrPause play')
       audioPlayer.current.play()
-      // animationRef.current = requestAnimationFrame(whilePlaying)
+      animationRef.current = requestAnimationFrame(whilePlaying)
     } else {
-      console.log('togglePlayOrPause pause')
       audioPlayer.current.pause()
-      // cancelAnimationFrame(animationRef.current);
+      cancelAnimationFrame(animationRef.current)
     }
+  }
+
+  const whilePlaying = () => {
+    progressBar.current.value = audioPlayer.current.currentTime
+    setCurrentTime(progressBar.current.value)
+    animationRef.current = requestAnimationFrame(whilePlaying)
   }
 
   return (
@@ -62,8 +68,10 @@ export default function AudioPlayer () {
           className={ classes.progress }>
           <PlayerProgress 
             progressRef={ progressBar }
-            currentValue={ progressValue }
-            changeRange={ setProgressValue }/>
+            currentTime={ currentTime }
+            audioDuration={ duration }
+            onChangeCurrentProgress={ onChangePlayerProgress }
+          />
         </Box>
         <Box component='div'>
           <PlayerVolume />
