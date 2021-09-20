@@ -4,6 +4,7 @@ import { useStyles } from './styles'
 import PlayerControls from '../PlayerControls'
 import PlayerProgress from '../PlayerProgress'
 import PlayerVolume from '../PlayerVolume'
+import PlayerTime from '../PlayerTime'
 
 export default function AudioPlayer () {
   const classes = useStyles()
@@ -46,6 +47,14 @@ export default function AudioPlayer () {
     animationRef.current = requestAnimationFrame(whilePlaying)
   }
 
+  // const handleForward = newValue => {
+  //   onChangePlayerProgress(newValue)
+  // }
+
+  // const handleRewind = newValue => {
+  //   onChangePlayerProgress(newValue)
+  // }
+
   return (
     <Box 
       component='div'
@@ -64,7 +73,7 @@ export default function AudioPlayer () {
         </Box>
         <Box 
           component='div' 
-          mx={2}
+          ml={2}
           className={ classes.progress }>
           <PlayerProgress 
             progressRef={ progressBar }
@@ -72,6 +81,13 @@ export default function AudioPlayer () {
             audioDuration={ duration }
             onChangeCurrentProgress={ onChangePlayerProgress }
           />
+        </Box>
+        <Box 
+          component='div' 
+          mr={2}>
+          <PlayerTime 
+            currentTime={ currentTime }
+            audioDuration={ duration }/>
         </Box>
         <Box component='div'>
           <PlayerVolume />

@@ -5,7 +5,10 @@ import FastForwardIcon from '@material-ui/icons/FastForward'
 import FastRewindIcon from '@material-ui/icons/FastRewind'
 import PauseCircleFilledIcon from '@material-ui/icons/PauseCircleFilled'
 
-export default function PlayerControls ({ isPlaying, handleToggle }) {
+export default function PlayerControls ({ 
+  isPlaying, 
+  handleToggle
+}) {
   const classes = useStyles()
   return (
     <Box 
