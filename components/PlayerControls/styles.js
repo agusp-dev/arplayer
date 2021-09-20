@@ -7,13 +7,10 @@ export const useStyles = makeStyles(() => ({
   },
 
   playIcon: {
-    fontSize: '26px',
     color: '#375CA4',
-    margin: '0 4px'
   },
 
   rewindIcon: {
-    fontSize: '18px',
     color: '#375CA4'
   }
 
