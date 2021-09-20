@@ -5,7 +5,7 @@ export default function PlayerProgress ({
   progressRef, 
   currentTime, 
   audioDuration, 
-  changeRange 
+  onChangeCurrentProgress 
 }) {
   const classes = useStyles()
 
@@ -19,6 +19,8 @@ export default function PlayerProgress ({
 
   const calcCurrentTime = cSeconds => (cSeconds * 100 / audioDuration)
 
+  const calcCurrentProgress = newProgress => (newProgress * audioDuration / 100)
+
   return (
     <Box 
       component='div'
@@ -27,7 +29,9 @@ export default function PlayerProgress ({
           value={ calcCurrentTime(currentTime) } 
           aria-label='Audio'
           ref={ progressRef }
-          onChange={ changeRange } />
+          // onChange={ onChangeCurrentProgress }
+          onChange={ (event, newProgress) => onChangeCurrentProgress(calcCurrentProgress(newProgress)) } 
+        />
         
         <Box 
           component='div' 
