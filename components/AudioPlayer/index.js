@@ -12,10 +12,14 @@ export default function AudioPlayer () {
 
   const [isPlaying, setIsPlaying] = useState(false)
   const [progressValue, setProgressValue] = useState(0)
-  const [duration, setDuration] = useState(0)
+
+
+  const [currentTime, setCurrentTime] = useState(0) // audio current time
+  const [duration, setDuration] = useState(0) // audio duration
 
   const audioPlayer = useRef()   // reference our audio component
   const progressBar = useRef()   // reference our progress bar
+  const animationRef = useRef();  // reference the animation
 
   useEffect(() => {
     const seconds = Math.floor(audioPlayer.current.duration)
@@ -38,14 +42,19 @@ export default function AudioPlayer () {
     const prevValue = isPlaying
     setIsPlaying(!prevValue)
     if (!prevValue) {
-      console.log('togglePlayOrPause play')
       audioPlayer.current.play()
-      // animationRef.current = requestAnimationFrame(whilePlaying)
+      animationRef.current = requestAnimationFrame(whilePlaying)
     } else {
-      console.log('togglePlayOrPause pause')
       audioPlayer.current.pause()
-      // cancelAnimationFrame(animationRef.current);
+      cancelAnimationFrame(animationRef.current)
     }
+  }
+
+  const whilePlaying = () => {
+    progressBar.current.value = audioPlayer.current.currentTime
+    // changePlayerCurrentTime()
+    setCurrentTime(progressBar.current.value)
+    animationRef.current = requestAnimationFrame(whilePlaying)
   }
 
   return (
@@ -56,6 +65,8 @@ export default function AudioPlayer () {
         <audio
           ref={ audioPlayer }
           src={ AUDIO_URL }
+          onProgress={ () => console.log('progress') }
+          onRateChange={ () => console.log('onRateChange') }
           preload='metadata'
         ></audio>
 
@@ -70,7 +81,7 @@ export default function AudioPlayer () {
           className={ classes.progress }>
           <PlayerProgress 
             progressRef={ progressBar }
-            currentValue={ progressValue }
+            currentTime={ currentTime }
             audioDuration={ duration }
             changeRange={ setProgressValue }/>
         </Box>
