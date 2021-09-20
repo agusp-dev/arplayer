@@ -11,10 +11,18 @@ export default function AudioPlayer () {
   const AUDIO_URL = 'https://cdn.simplecast.com/audio/2db45ca2-a004-4843-b17e-79ea45f25093/episodes/17e9092f-c8e3-4cf5-9fd5-c8a29a8471cd/audio/261915f9-3469-4918-bcc2-504446d0f9a5/default_tc.mp3'
 
   const [isPlaying, setIsPlaying] = useState(false)
-  const [progressValue, setProgressValue] = useState(40)
+  const [progressValue, setProgressValue] = useState(0)
+  const [duration, setDuration] = useState(0)
 
   const audioPlayer = useRef()   // reference our audio component
   const progressBar = useRef()   // reference our progress bar
+
+  useEffect(() => {
+    const seconds = Math.floor(audioPlayer.current.duration)
+    setDuration(seconds)
+    progressBar.current.max = seconds
+
+  }, [audioPlayer?.current?.loadedmetadata, audioPlayer?.current?.readyState])
 
   // const changeRange = () => {
   //   audioPlayer.current.currentTime = progressBar.current.value
@@ -63,6 +71,7 @@ export default function AudioPlayer () {
           <PlayerProgress 
             progressRef={ progressBar }
             currentValue={ progressValue }
+            audioDuration={ duration }
             changeRange={ setProgressValue }/>
         </Box>
         <Box component='div'>
