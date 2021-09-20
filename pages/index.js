@@ -1,6 +1,6 @@
 import { Box, Grid } from '@material-ui/core'
 import Head from 'next/head'
-import AudioPlayerContainer from '../components/AudioPlayerContainer'
+import AudioPlayer from '../components/AudioPlayer'
 import { useStyles } from './styles'
 
 export default function Home() {
@@ -25,7 +25,7 @@ export default function Home() {
             <Box 
               component='div' 
               className={ classes.audioContainer }>
-              <AudioPlayerContainer />
+              <AudioPlayer />
             </Box>
           </Grid>
         </Grid>

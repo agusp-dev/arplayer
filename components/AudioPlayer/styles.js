@@ -2,7 +2,16 @@ import { makeStyles } from '@material-ui/core/styles'
 
 export const useStyles = makeStyles(() => ({
   root: {
-    backgroundColor: 'gray'
+    width: '700px',
+    padding: '24px 12px',
+    backgroundColor: '#FFF',
+    borderRadius: '16px',
+    display: 'flex',
+    alignItems: 'center'
+  },
+
+  progress: {
+    flexGrow: 1
   }
 
 }))

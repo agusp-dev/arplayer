@@ -5,7 +5,7 @@ import {
 import { useStyles } from './styles'
 import VolumeMuteIcon from '@material-ui/icons/VolumeMute'
 
-export default function AudioVolume () {
+export default function PlayerVolume () {
   const classes = useStyles()
 
   const [volume, setVolume] = useState(30)
