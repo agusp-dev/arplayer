@@ -52,7 +52,9 @@ export default function AudioPlayer () {
         ></audio>
 
         <Box component='div'>
-          <PlayerControls handleToggle={ togglePlayOrPause } />
+          <PlayerControls
+            isPlaying={ isPlaying } 
+            handleToggle={ togglePlayOrPause } />
         </Box>
         <Box 
           component='div' 
