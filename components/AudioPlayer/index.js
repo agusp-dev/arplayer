@@ -1,9 +1,14 @@
-import { useEffect, useState, useRef } from 'react'
+import { 
+  useEffect, 
+  useState, 
+  useRef 
+} from 'react'
 import { Box } from '@material-ui/core'
 import { useStyles } from './styles'
 import PlayerControls from '../PlayerControls'
 import PlayerProgress from '../PlayerProgress'
 import PlayerVolume from '../PlayerVolume'
+import PlayerTime from '../PlayerTime'
 
 export default function AudioPlayer () {
   const classes = useStyles()
@@ -11,22 +16,21 @@ export default function AudioPlayer () {
   const AUDIO_URL = 'https://cdn.simplecast.com/audio/2db45ca2-a004-4843-b17e-79ea45f25093/episodes/17e9092f-c8e3-4cf5-9fd5-c8a29a8471cd/audio/261915f9-3469-4918-bcc2-504446d0f9a5/default_tc.mp3'
 
   const [isPlaying, setIsPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
 
-  const [currentTime, setCurrentTime] = useState(0) // audio current time
-  const [duration, setDuration] = useState(0) // audio duration
-
-  const audioPlayer = useRef()   // reference our audio component
-  const progressBar = useRef()   // reference our progress bar
-  const animationRef = useRef()  // reference the animation
+  const audioPlayer = useRef()
+  const progressBar = useRef()
+  const animationRef = useRef() 
 
   useEffect(() => {
     const seconds = Math.floor(audioPlayer.current.duration)
     setDuration(seconds)
     progressBar.current.max = seconds
-
   }, [audioPlayer?.current?.loadedmetadata, audioPlayer?.current?.readyState])
 
-  const onChangePlayerProgress = newValue => audioPlayer.current.currentTime = newValue
+  const onChangePlayerProgress = newValue => 
+    audioPlayer.current.currentTime = newValue
 
   const togglePlayOrPause = () => {
     const prevValue = isPlaying
@@ -46,25 +50,33 @@ export default function AudioPlayer () {
     animationRef.current = requestAnimationFrame(whilePlaying)
   }
 
+  const handleAudioEnd = () => {
+    setIsPlaying(false)
+    audioPlayer.current.currentTime = 0
+    progressBar.current.value = 0
+    setCurrentTime(0)
+  }
+
   return (
     <Box 
       component='div'
       className={ classes.root }>
-        
         <audio
           ref={ audioPlayer }
           src={ AUDIO_URL }
           preload='metadata'
+          onEnded={ handleAudioEnd }
         ></audio>
-
         <Box component='div'>
           <PlayerControls
             isPlaying={ isPlaying } 
-            handleToggle={ togglePlayOrPause } />
+            handleToggle={ togglePlayOrPause }
+            currentTime={ currentTime }
+            onChangeCurrentProgress={ onChangePlayerProgress } />
         </Box>
         <Box 
           component='div' 
-          mx={2}
+          ml={2}
           className={ classes.progress }>
           <PlayerProgress 
             progressRef={ progressBar }
@@ -72,6 +84,13 @@ export default function AudioPlayer () {
             audioDuration={ duration }
             onChangeCurrentProgress={ onChangePlayerProgress }
           />
+        </Box>
+        <Box 
+          component='div' 
+          mr={2}>
+          <PlayerTime 
+            currentTime={ currentTime }
+            audioDuration={ duration }/>
         </Box>
         <Box component='div'>
           <PlayerVolume />
