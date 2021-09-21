@@ -7,9 +7,12 @@ import PauseCircleFilledIcon from '@material-ui/icons/PauseCircleFilled'
 
 export default function PlayerControls ({ 
   isPlaying, 
-  handleToggle
+  handleToggle,
+  currentTime,
+  onChangeCurrentProgress
 }) {
   const classes = useStyles()
+
   return (
     <Box 
       component='div' 
@@ -17,7 +20,8 @@ export default function PlayerControls ({
         <Box component='div'>
           <IconButton 
             size='small'
-            aria-label='Rewind'>
+            aria-label='Rewind'
+            onClick={ () => onChangeCurrentProgress(currentTime - 30) }>
             <FastRewindIcon 
               className={ classes.rewindIcon } />
           </IconButton>
@@ -40,7 +44,8 @@ export default function PlayerControls ({
         <Box component='div'>
           <IconButton 
             size='small'
-            aria-label='Forward'>
+            aria-label='Forward'
+            onClick={ () => onChangeCurrentProgress(currentTime + 30) }>
             <FastForwardIcon 
               className={ classes.rewindIcon } />
           </IconButton>

@@ -27,7 +27,6 @@ export default function AudioPlayer () {
     const seconds = Math.floor(audioPlayer.current.duration)
     setDuration(seconds)
     progressBar.current.max = seconds
-
   }, [audioPlayer?.current?.loadedmetadata, audioPlayer?.current?.readyState])
 
   const onChangePlayerProgress = newValue => 
@@ -51,21 +50,29 @@ export default function AudioPlayer () {
     animationRef.current = requestAnimationFrame(whilePlaying)
   }
 
+  const handleAudioEnd = () => {
+    setIsPlaying(false)
+    audioPlayer.current.currentTime = 0
+    progressBar.current.value = 0
+    setCurrentTime(0)
+  }
+
   return (
     <Box 
       component='div'
       className={ classes.root }>
-        
         <audio
           ref={ audioPlayer }
           src={ AUDIO_URL }
           preload='metadata'
+          onEnded={ handleAudioEnd }
         ></audio>
-
         <Box component='div'>
           <PlayerControls
             isPlaying={ isPlaying } 
-            handleToggle={ togglePlayOrPause } />
+            handleToggle={ togglePlayOrPause }
+            currentTime={ currentTime }
+            onChangeCurrentProgress={ onChangePlayerProgress } />
         </Box>
         <Box 
           component='div' 
