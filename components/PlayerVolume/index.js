@@ -1,4 +1,7 @@
-import { useEffect, useState } from 'react'
+import { 
+	useEffect, 
+	useState 
+} from 'react'
 import { 
   Box,
   Slider } from '@material-ui/core'
@@ -14,13 +17,11 @@ export default function PlayerVolume ({
 	handleChangeVolume 
 }) {
   const classes = useStyles()
-
   const [volume, setVolume] = useState(0)
 
 	useEffect(() => {
 		if (!currentVolume) return
 		const volumePercent = getAudioVolumePercent(currentVolume)
-		console.log('PlayerVolume', currentVolume, volumePercent)
 		setVolume(volumePercent)
 	}, [currentVolume])
 
@@ -43,7 +44,6 @@ export default function PlayerVolume ({
             aria-labelledby='continuous-slider'
             className={ classes.slider } />
         </Box>
-
     </Box>
   )
 }
