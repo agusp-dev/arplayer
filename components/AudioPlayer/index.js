@@ -18,6 +18,7 @@ export default function AudioPlayer () {
   const [isPlaying, setIsPlaying] = useState(false)
   const [currentTime, setCurrentTime] = useState(0)
   const [duration, setDuration] = useState(0)
+	const [currentVolume, setCurrentVolume] = useState(0)
 
   const audioPlayer = useRef()
   const progressBar = useRef()
@@ -27,6 +28,7 @@ export default function AudioPlayer () {
     const seconds = Math.floor(audioPlayer.current.duration)
     setDuration(seconds)
     progressBar.current.max = seconds
+		setCurrentVolume(audioPlayer.current.volume)
   }, [audioPlayer?.current?.loadedmetadata, audioPlayer?.current?.readyState])
 
   const onChangePlayerProgress = newValue => 
@@ -56,6 +58,11 @@ export default function AudioPlayer () {
     progressBar.current.value = 0
     setCurrentTime(0)
   }
+
+	const handleAudioVolumeChange = newValue => {
+		audioPlayer.current.volume = newValue
+		setCurrentVolume(newValue)
+	}
 
   return (
     <Box 
@@ -93,7 +100,9 @@ export default function AudioPlayer () {
             audioDuration={ duration }/>
         </Box>
         <Box component='div'>
-          <PlayerVolume />
+          <PlayerVolume 
+						currentVolume={ currentVolume }
+						handleChangeVolume={ handleAudioVolumeChange }/>
         </Box>
     </Box>
   )

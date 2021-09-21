@@ -23,3 +23,15 @@ export const getAudioProgressPercent =
  */
 export const getAudioCurrentSeconds = 
   (audioDuration, currenPercent) => (currenPercent * audioDuration / 100)
+
+/**
+ * Receives current audio volume value (between 0 and 1.0) 
+ * and return audio volume percent (between 0 and 100)
+ */
+export const getAudioVolumePercent = value => (value * 100)
+
+/**
+ * Reveive current audio volume percent
+ * and return audio volume value
+ */
+export const getAudioVolumeValue = percent => (percent / 100)
