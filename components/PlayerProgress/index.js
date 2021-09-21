@@ -3,6 +3,10 @@ import {
   Slider 
 } from '@material-ui/core'
 import { useStyles } from './styles'
+import { 
+  getAudioCurrentSeconds,
+  getAudioProgressPercent 
+} from '../../utils/calc'
 
 export default function PlayerProgress ({ 
   progressRef, 
@@ -12,19 +16,22 @@ export default function PlayerProgress ({
 }) {
   const classes = useStyles()
 
-  const calcCurrentTime = cSeconds => (cSeconds * 100 / audioDuration)
-
-  const calcCurrentProgress = newProgress => (newProgress * audioDuration / 100)
-
   return (
     <Box 
       component='div'
       className={ classes.root }>
         <Slider 
-          value={ calcCurrentTime(currentTime) } 
+          value={ 
+            getAudioProgressPercent(audioDuration, currentTime) 
+          } 
           aria-label='Audio'
           ref={ progressRef }
-          onChange={ (event, newProgress) => onChangeCurrentProgress(calcCurrentProgress(newProgress)) } 
+          onChange={ 
+            (event, newProgress) => 
+              onChangeCurrentProgress(
+                getAudioCurrentSeconds(audioDuration, newProgress)
+              ) 
+          } 
         />
     </Box>
   )
